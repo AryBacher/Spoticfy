@@ -17,6 +17,11 @@ const getArtistas = (_, res) => {
             ...
         ]
     */
+   conn.query("SELECT * FROM artistas", (err, rows) => {
+       if (err) return res.status(500).send("Error al seleccionar los artistas")
+       else if (!rows.length) return res.status(500).send("No hay artistas")
+       res.json(rows)
+   })
 };
 
 const getArtista = (req, res) => {
@@ -29,6 +34,12 @@ const getArtista = (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+   const id = parseInt(req.params.id)
+   conn.query("SELECT * FROM artistas WHERE id = ?", [id], (err, rows) => {
+    if (err) return res.status(500).send("El ID ingresado no existe")
+    else if (!rows.length) return res.status(500).send("El ID no ha sido ingresado")
+    res.json(rows)       
+   })
 };
 
 const createArtista = (req, res) => {
