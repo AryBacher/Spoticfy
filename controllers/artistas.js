@@ -51,6 +51,13 @@ const createArtista = (req, res) => {
             "nombre": "Nombre del artista",
         }
     */
+
+    const nombreArtista = req.body.nombre
+    conn.query("INSERT INTO artistas (nombre) VALUES (?)", [nombreArtista], (err, rows) => {
+        if (err) return res.status(500).send("Ha ocurrido un error")
+        //else if (!rows.length) return res.status(500).send("Ha ocurrido un error")
+        res.status(200).json({message: ("El usuario ha sido ingresado")})
+    })
 };
 
 const updateArtista = (req, res) => {
@@ -62,17 +69,38 @@ const updateArtista = (req, res) => {
             "nombre": "Nombre del artista"
         }
     */
+    const id = parseInt(req.params.id)
+    const nombre = req.body.nombre
+    conn.query("UPDATE artistas SET nombre = ? WHERE id = ?", [nombre, id], (err, rows) => {
+        if (err) return res.status(500).send("Ha ocurrido un error")
+        //else if (!rows.length) return res.status(500).send("Ha ocurrido un error")
+        res.status(200).json({message: ("El usuario ha sido actualizado")})
+    })
 };
 
 const deleteArtista = (req, res) => {
     // Completar con la consulta que elimina un artista
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
+
+    const id = parseInt(req.params.id)
+    conn.query("DELETE FROM artistas WHERE id = ?", [id], (err, rows) => {
+        if (err) return res.status(500).send("Ha ocurrido un error")
+        //else if (!rows.length) return res.status(500).send("Ha ocurrido un error")
+        res.status(200).json({message: ("El usuario ha sido borrado")})
+    })
 };
 
 const getAlbumesByArtista = (req, res) => {
     // Completar con la consulta que devuelve las canciones de un artista 
     // Recordar que los parámetros de una consulta GET se encuentran en req.params
     // Deberían devolver los datos de la misma forma que getAlbumes
+
+    const id = parseInt(req.params.id)
+    conn.query("SELECT artistas.id, albumes.nombre, artistas.nombre AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id WHERE artistas.id = ?", [id], (err, rows) => {
+        if (err) return res.status(500).send("Ha ocurrido un error")
+        //else if (!rows.length) return res.status(500).send("Ha ocurrido un error")
+        res.json(rows)
+    })
 };
 
 const getCanionesByArtista = (req, res) => {

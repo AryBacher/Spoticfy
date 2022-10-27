@@ -19,6 +19,8 @@ const getAlbumes = (_, res) => {
             ...
         ]
     */
+
+    //conn.query("SELECT albumes.id, albumes.nombre, artistas.id, artistas.nombre, albumes.artista AS nombre_artista FROM albumes INNER JOIN artistas ON albumes.artista = artistas.id")
 };
 
 const getAlbum = (req, res) => {
