@@ -90,7 +90,7 @@ const deleteAlbum = (req, res) => {
     // Recordar que los parámetros de una consulta DELETE se encuentran en req.params
 
     const id = req.params.id
-    conn.query("DELETE FROM albumes WHERE id = ?", [id], (err, rows) => {
+    conn.query("DELETE albumes, canciones FROM albumes INNER JOIN canciones ON albumes.id = canciones.album WHERE id = ?", [id], (err, rows) => {
         if (err) return res.status(500).send("Ha ocurrido un error")
         res.status(200).json({message: ("El album ha sido borrado")})
     })
